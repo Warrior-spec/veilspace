@@ -1,4 +1,5 @@
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -9,6 +10,7 @@ class Settings(BaseSettings):
     )
 
     environment: str = "development"
+    data_dir: Path = Path("storage")
 
 
 @lru_cache

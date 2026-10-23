@@ -22,6 +22,8 @@ __pycache__/
 .flutter-plugins*
 .pub-cache/
 build/
+dist/
+VeilSpaceData/
 coverage/
 android/local.properties
 android/key.properties

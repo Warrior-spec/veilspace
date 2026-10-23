@@ -4,7 +4,7 @@
 
 Flutter Windows, Android, and web clients connect to one fixed HTTPS API. Only Windows watches a selected folder. Mobile and web select files manually. Configuration and credentials are operator concerns, absent from end-user screens.
 
-Python FastAPI and a processing worker run on the Windows server. MySQL stores metadata and access rules; files live outside the public web root. API keys and MySQL credentials never ship with clients.
+Python FastAPI and a processing worker run on the Windows server. SQLite stores metadata and access rules; files live outside the public web root. API keys never ship with clients. The server executable initializes its database and directories beside itself.
 
 ## Lifecycle
 

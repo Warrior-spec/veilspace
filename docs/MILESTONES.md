@@ -1,8 +1,8 @@
 # VeilSpace goals
 
-Complete and verify one goal before moving to the next. The owner has authorized Git operations and pushes through CMD using their existing identity.
+Complete and verify each goal before moving to the next.
 
-## 1. Project foundation — complete
+## 1. Project foundation : complete
 
 - [x] Establish product scope and repository structure.
 - [x] Add runnable FastAPI service and meaningful health/configuration checks.
@@ -12,17 +12,25 @@ Complete and verify one goal before moving to the next. The owner has authorized
 
 Acceptance: backend runs; source is organized; missing prerequisites and next steps are explicit. Compiled clients are not required for this foundation goal.
 
-## 2. MySQL and authentication
+## 2. Portable server and Flutter: in progress
+
+- [ ] Restore Flutter and generate platform runners.
+- [x] Initialize SQLite and private storage automatically.
+- [x] Package a server executable with startup URLs and Windows firewall setup.
+
+Acceptance: executable starts without Python or a database installation; Flutter analysis passes.
+
+## 3. Authentication
 
 - Finish Flutter SDK setup, generate platform runners, and verify platform build prerequisites.
-- Create migrations for users, workspace memberships, documents, and revisions.
+- Create SQLite migrations for users, workspace memberships, documents, and revisions.
 - Add password hashing, signup, login, expiring sessions, and logout.
 - Enforce membership and ownership on every relevant endpoint.
 - Connect Flutter login and verify with two different accounts.
 
 Acceptance: two users can sign in; unauthorized requests and cross-owner modifications fail.
 
-## 3. Document intake and private processing queue
+## 4. Document intake and private processing queue
 
 - Add bounded manual uploads for DOCX, TXT, and text-based PDF.
 - Keep originals in private staging; reject or hold unsupported/unreadable files.
@@ -31,7 +39,7 @@ Acceptance: two users can sign in; unauthorized requests and cross-owner modific
 
 Acceptance: originals cannot be retrieved by other members, and pending files never appear as published.
 
-## 4. Detection, redaction, aliases, and cost limits
+## 5. Detection, redaction, aliases, and cost limits
 
 - Add rules and bounded AI assessment with protected server credentials.
 - Introduce workspace-scoped consistent aliases without guessing ambiguous identity merges.
@@ -41,7 +49,7 @@ Acceptance: originals cannot be retrieved by other members, and pending files ne
 
 Acceptance: representative fictional documents redact correctly; repeat processing is cached; budget exhaustion holds publication.
 
-## 5. Windows folder watching and revisions
+## 6. Windows folder watching and revisions
 
 - Select and remember one local folder.
 - Debounce changes and wait for stable files before uploading.
@@ -50,11 +58,11 @@ Acceptance: representative fictional documents redact correctly; repeat processi
 
 Acceptance: new file, edited file, rename, repeat save, and interrupted upload behave predictably.
 
-## 6. Package, deploy, and submit
+## 7. Package, deploy, and submit
 
 - Compile Windows distribution, Android APK, and web build.
 - Configure one fixed HTTPS endpoint internally; no user server setup screen.
-- Deploy Python worker/API and MySQL on the server with private disk storage.
+- Deploy the portable server and its private data directory.
 - Test PC automatic upload, phone manual upload, and second-account web access.
 - Finish team details, credits, README, demo video, and submission links.
 - Perform the authorized final push before the event deadline.
