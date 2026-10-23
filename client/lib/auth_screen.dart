@@ -69,6 +69,38 @@ class _AuthScreenState extends State<AuthScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  Card(
+                    color: const Color(0xFFFFF0C2),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('DEMO ACCOUNT',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF594300))),
+                          const SizedBox(height: 8),
+                          const SelectableText(
+                              'Email: demo@demo.com\nPassword: demo12345678',
+                              style: TextStyle(color: Color(0xFF382E13))),
+                          TextButton.icon(
+                            onPressed: _busy
+                                ? null
+                                : () => setState(() {
+                                      _register = false;
+                                      _error = null;
+                                      _email.text = 'demo@demo.com';
+                                      _password.text = 'demo12345678';
+                                    }),
+                            icon: const Icon(Icons.login),
+                            label: const Text('Fill demo login'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
                   const Icon(Icons.shield_outlined, size: 48),
                   const SizedBox(height: 16),
                   Text(

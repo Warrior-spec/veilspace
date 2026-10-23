@@ -10,6 +10,16 @@ Document sharing with server-side redaction and consistent identity aliases.
 
 [Live application](http://91.124.98.60:8787) | [Source code](https://github.com/Warrior-spec/veilspace)
 
+## Demo login
+
+Use the same demo account on the website, Windows app, and Android app:
+
+| Email | Password |
+| --- | --- |
+| `demo@demo.com` | `demo12345678` |
+
+The login screen displays these credentials and provides a **Fill demo login** button. Use fictional documents in this shared demo account.
+
 ## Problem and AI
 
 Teams often need to share useful documents that contain names, contact details, and identifiers. VeilSpace checks documents before publication, replaces detected private information with redactions or consistent identity aliases, and keeps unreadable or uncertain files private.
@@ -83,7 +93,7 @@ Flutter setup and builds: [client/README.md](client/README.md).
 
 ## Submission
 
-The live website is deployed. Android APK packaging and the narrated demo recording are pending. The APK and demo video links will be added when available. Demo credentials belong in the submission form notes, not this public repository.
+The live website is deployed. Android APK packaging and the narrated demo recording are pending. The APK and demo video links will be added when available. The public demo credentials above are also available for the submission form notes.
 
 Resources: Flutter, FastAPI, SQLite, PyInstaller, pypdf, ReportLab, file_selector, and the OpenAI API. No datasets are included. Assessment uses `gpt-4.1-mini` with a 20,000-character input limit, a 2,048-token output limit, one worker, no automatic AI retries, at most 100 requests per UTC day, and a default $1 daily reservation allowance. Identical extracted content reuses cached assessments. Reservations are conservative application estimates, not provider billing totals.
 

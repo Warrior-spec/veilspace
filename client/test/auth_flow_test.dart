@@ -25,7 +25,8 @@ http.Response? workspaceResponse(http.Request request) {
 }
 
 void main() {
-  testWidgets('sign in and revoke the current session on sign out', (
+  testWidgets(
+      'demo login fills credentials and revokes the session on sign out', (
     tester,
   ) async {
     final api = ApiClient(
@@ -37,19 +38,13 @@ void main() {
           return http.Response('', 204);
         }
         expect(request.url.path, '/api/auth/login');
-        expect(jsonDecode(request.body)['email'], 'member@example.com');
+        expect(jsonDecode(request.body)['email'], 'demo@demo.com');
+        expect(jsonDecode(request.body)['password'], 'demo12345678');
         return sessionResponse(200);
       }),
     );
     await tester.pumpWidget(VeilSpaceApp(api: api));
-    await tester.enterText(
-      find.byType(TextFormField).at(0),
-      'member@example.com',
-    );
-    await tester.enterText(
-      find.byType(TextFormField).at(1),
-      'DocumentDemo2026!',
-    );
+    await tester.tap(find.text('Fill demo login'));
     await tester.ensureVisible(find.text('Sign in'));
     await tester.tap(find.text('Sign in'));
     await tester.pumpAndSettle();
@@ -96,6 +91,7 @@ void main() {
       }),
     );
     await tester.pumpWidget(VeilSpaceApp(api: api));
+    await tester.ensureVisible(find.text('Create an account'));
     await tester.tap(find.text('Create an account'));
     await tester.pumpAndSettle();
     await tester.enterText(find.byType(TextFormField).at(0), 'Demo Member');
