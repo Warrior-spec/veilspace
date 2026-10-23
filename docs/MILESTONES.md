@@ -6,7 +6,7 @@ Public repository, Python service, Flutter platform projects, and initial health
 
 ## 2. Portable server and toolchain: complete
 
-The server executable initializes SQLite and private storage, serves the website, and prints connection URLs. Flutter is restored and the Windows client compiles. Android platform 36 and build tools 36.0.0 are installed; the NDK download remains with the operator.
+The server executable initializes SQLite and private storage, serves the website, and prints connection URLs. Flutter is restored and the Windows client compiles. Android platform 36, build tools 36.0.0, and the checksum-verified NDK 27.0.12077973 are installed.
 
 ## 3. Authentication: implemented and verified
 
@@ -34,7 +34,8 @@ One folder is remembered per account. Files must be stable before upload. Unchan
 - [x] Verify public two-account redaction, reading, sharing, deduplication, and cache use.
 - [x] Verify 27 backend tests, four client tests, and clean Flutter analysis.
 - [x] Add registered team details, AI explanation, stack, local setup, deployment link, and resource credits to the README.
-- [ ] Finish NDK installation and compile the Flutter APK.
+- [x] Finish NDK installation.
+- [ ] Compile the Flutter APK.
 - [ ] Install and test only VeilSpace on the paired Android phone.
 - [ ] Complete a final Windows folder-upload demonstration against the public server.
 - [ ] Publish the APK with an accessible link.
