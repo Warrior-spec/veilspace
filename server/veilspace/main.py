@@ -6,6 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from veilspace.config import Settings, get_settings
 from veilspace.database import initialize_database
 from veilspace.auth import AuthLimiter, router as auth_router
+from veilspace.documents import router as document_router
+from veilspace.processing import Processor
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -15,7 +17,16 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @asynccontextmanager
     async def lifespan(app: FastAPI):
         initialize_database(settings.data_dir)
-        yield
+        processor = Processor(settings)
+        app.state.processor = processor
+        if settings.worker_enabled:
+            processor.start()
+        try:
+            yield
+        finally:
+            processor.stop.set()
+            if settings.worker_enabled:
+                processor.thread.join(timeout=2)
 
     app = FastAPI(
         title="VeilSpace API",
@@ -29,6 +40,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.settings = settings
     app.state.auth_limiter = AuthLimiter()
     app.include_router(auth_router)
+    app.include_router(document_router)
     if development:
         app.add_middleware(
             CORSMiddleware,

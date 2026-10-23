@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'api.dart';
 import 'auth_screen.dart';
 
@@ -38,9 +39,15 @@ class _VeilSpaceAppState extends State<VeilSpaceApp> {
         useMaterial3: true,
       ),
       home: session == null
-        ? AuthScreen(api: api, onAuthenticated: (value) => setState(() => session = value))
-        : WorkspaceFoundation(api: api, session: session!,
-            onSignedOut: () => setState(() => session = null)),
+          ? AuthScreen(
+              api: api,
+              onAuthenticated: (value) => setState(() => session = value),
+            )
+          : WorkspaceFoundation(
+              api: api,
+              session: session!,
+              onSignedOut: () => setState(() => session = null),
+            ),
     );
   }
 }
@@ -49,8 +56,12 @@ class WorkspaceFoundation extends StatefulWidget {
   final ApiClient api;
   final Session session;
   final VoidCallback onSignedOut;
-  const WorkspaceFoundation({super.key, required this.api,
-    required this.session, required this.onSignedOut});
+  const WorkspaceFoundation({
+    super.key,
+    required this.api,
+    required this.session,
+    required this.onSignedOut,
+  });
 
   @override
   State<WorkspaceFoundation> createState() => _WorkspaceFoundationState();
@@ -67,8 +78,13 @@ class _WorkspaceFoundationState extends State<WorkspaceFoundation> {
       await widget.api.logout(widget.session);
       if (mounted) widget.onSignedOut();
     } catch (_) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Could not sign out. Please try again.')));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Could not sign out. Please try again.'),
+          ),
+        );
+      }
     } finally {
       if (mounted) setState(() => signingOut = false);
     }
@@ -77,10 +93,16 @@ class _WorkspaceFoundationState extends State<WorkspaceFoundation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('VeilSpace'), actions: [
-        IconButton(onPressed: signingOut ? null : signOut,
-          tooltip: 'Sign out', icon: const Icon(Icons.logout)),
-      ]),
+      appBar: AppBar(
+        title: const Text('VeilSpace'),
+        actions: [
+          IconButton(
+            onPressed: signingOut ? null : signOut,
+            tooltip: 'Sign out',
+            icon: const Icon(Icons.logout),
+          ),
+        ],
+      ),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 720),
@@ -89,16 +111,17 @@ class _WorkspaceFoundationState extends State<WorkspaceFoundation> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(labels[selected], style: Theme.of(context).textTheme.headlineMedium),
+                Text(
+                  labels[selected],
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
                 const SizedBox(height: 12),
                 Text(widget.session.email),
                 const SizedBox(height: 24),
                 const Card(
                   child: Padding(
                     padding: EdgeInsets.all(20),
-                    child: Text(
-                      'No files yet.',
-                    ),
+                    child: Text('No files yet.'),
                   ),
                 ),
               ],
@@ -110,9 +133,18 @@ class _WorkspaceFoundationState extends State<WorkspaceFoundation> {
         selectedIndex: selected,
         onDestinationSelected: (value) => setState(() => selected = value),
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.folder_outlined), label: 'My Files'),
-          NavigationDestination(icon: Icon(Icons.people_outline), label: 'Shared Files'),
-          NavigationDestination(icon: Icon(Icons.hourglass_empty), label: 'Pending'),
+          NavigationDestination(
+            icon: Icon(Icons.folder_outlined),
+            label: 'My Files',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.people_outline),
+            label: 'Shared Files',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.hourglass_empty),
+            label: 'Pending',
+          ),
         ],
       ),
     );

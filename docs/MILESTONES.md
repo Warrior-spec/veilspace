@@ -12,13 +12,15 @@ Complete and verify each goal before moving to the next.
 
 Acceptance: backend runs; source is organized; missing prerequisites and next steps are explicit. Compiled clients are not required for this foundation goal.
 
-## 2. Portable server and Flutter: in progress
+## 2. Portable server and Flutter: complete
 
-- [ ] Restore Flutter and generate platform runners.
+- [x] Restore Flutter and generate platform runners.
 - [x] Initialize SQLite and private storage automatically.
 - [x] Package a server executable with startup URLs and Windows firewall setup.
 
 Acceptance: executable starts without Python or a database installation; Flutter analysis passes.
+
+Verified: Flutter analysis is clean and all three authentication UI tests pass.
 
 ## 3. Authentication: in progress
 

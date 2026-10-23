@@ -43,5 +43,17 @@ def initialize_database(data_dir: Path) -> None:
                 )
                 connection.execute("CREATE INDEX sessions_expiry ON sessions(expires_at)")
                 connection.execute("INSERT INTO schema_migrations(version) VALUES (2)")
+            if not connection.execute("SELECT 1 FROM schema_migrations WHERE version=3").fetchone():
+                statements = (
+                    "CREATE TABLE documents (id TEXT PRIMARY KEY, owner_id TEXT NOT NULL REFERENCES users(id), name TEXT NOT NULL, source_key TEXT, created_at INTEGER NOT NULL, UNIQUE(owner_id, source_key))",
+                    "CREATE TABLE revisions (id TEXT PRIMARY KEY, document_id TEXT NOT NULL REFERENCES documents(id) ON DELETE CASCADE, number INTEGER NOT NULL, content_hash TEXT NOT NULL, size INTEGER NOT NULL, status TEXT NOT NULL, reason TEXT, original_file TEXT, sanitized_file TEXT, finding_count INTEGER NOT NULL DEFAULT 0, cached INTEGER NOT NULL DEFAULT 0, created_at INTEGER NOT NULL, UNIQUE(document_id, number))",
+                    "CREATE INDEX revisions_queue ON revisions(status, created_at)",
+                    "CREATE TABLE assessments (content_hash TEXT PRIMARY KEY, result_json TEXT NOT NULL, created_at INTEGER NOT NULL)",
+                    "CREATE TABLE identities (kind TEXT NOT NULL, identity TEXT NOT NULL, alias TEXT NOT NULL UNIQUE, PRIMARY KEY(kind, identity))",
+                    "CREATE TABLE ai_usage (day TEXT PRIMARY KEY, reserved_microdollars INTEGER NOT NULL DEFAULT 0, requests INTEGER NOT NULL DEFAULT 0)",
+                )
+                for statement in statements:
+                    connection.execute(statement)
+                connection.execute("INSERT INTO schema_migrations(version) VALUES (3)")
     finally:
         connection.close()
