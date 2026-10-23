@@ -16,6 +16,25 @@ Teams often need to share useful documents that contain names, contact details, 
 
 OpenAI `gpt-4.1-mini` receives extracted document text and returns structured sensitive text spans, categories, and a review flag. The server combines these findings with deterministic rules, generates a new sanitized PDF, and checks that known detected values are absent before publication. Identical extracted content reuses cached assessments.
 
+## Why we built VeilSpace
+
+We considered familiar AI projects such as a chatbot, image describer, or document analyzer. We chose document privacy because the useful outcome is a file that a team can actually share. Identifying sensitive information is only one step: the system must also remove it from the exported document, decide whether publication can proceed, preserve useful context, and handle later edits.
+
+VeilSpace gives AI a specific role inside a larger application. The model identifies sensitive spans and flags uncertainty. Conventional extraction, deterministic rules, private storage, authentication, PDF generation, verification, revision tracking, and usage controls turn those findings into a working sharing workflow.
+
+| Challenge | How VeilSpace handles it |
+| --- | --- |
+| Repeated manual checking | The Windows client watches a selected folder and uploads stable new or changed files while open. |
+| Different document formats | The server extracts text from DOCX, readable PDF, and UTF-8 TXT files before assessment. |
+| Removing information from the actual file | Sanitized text is used to generate a fresh PDF, and the output is checked for known detected values. |
+| Keeping documents understandable | Exact normalized names reuse workspace aliases, so the same person can be followed across documents without exposing the original name. |
+| Unreadable or uncertain content | Failed and uncertain revisions remain private in Pending instead of entering the shared library. |
+| Documents changing after publication | Changed files become revisions, with the previous published version available while a replacement is processing. |
+| Avoiding unnecessary API spending | Content caching, duplicate detection, bounded requests, and an atomic daily allowance reduce repeated assessments. Reading shared files does not call AI. |
+| Making the result usable by a team | Authenticated members browse published documents through the website and shared client interface; owners control retry and deletion. |
+
+The distinction is the complete path from a local file to a controlled, sanitized publication. Each component addresses a practical problem in that path. The prototype's limitations and current platform build status are documented below.
+
 ## Tech stack
 
 Flutter and Dart clients, an HTML/CSS/JavaScript browser interface, Python FastAPI, SQLite, pypdf, ReportLab, and the OpenAI API. PyInstaller packages the server as a portable Windows executable.
