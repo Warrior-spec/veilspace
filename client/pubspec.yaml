@@ -1,0 +1,11 @@
+name: veilspace
+description: Shared privacy-first document workspace.
+publish_to: none
+version: 0.1.0+1
+environment:
+  sdk: '>=3.5.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+flutter:
+  uses-material-design: true
