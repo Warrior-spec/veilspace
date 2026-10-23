@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
+from importlib.resources import files
 
 from veilspace.config import Settings, get_settings
 from veilspace.database import initialize_database
@@ -63,14 +64,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     @app.get("/", response_class=HTMLResponse, include_in_schema=False)
     def home() -> str:
-        return (
-            '<!doctype html><html lang="en"><meta charset="utf-8">'
-            '<meta name="viewport" content="width=device-width,initial-scale=1">'
-            '<title>VeilSpace</title><body style="font-family:system-ui;max-width:640px;'
-            'margin:15vh auto;padding:24px;background:#f3f7f5;color:#183d35">'
-            '<h1>VeilSpace</h1><p>The server is running.</p>'
-            '<p>The document workspace is under construction.</p></body></html>'
-        )
+        return files("veilspace").joinpath("web.html").read_text(encoding="utf-8")
 
     return app
 

@@ -25,7 +25,7 @@ class ApiClient {
         ? Uri.parse(_origin)
         : kIsWeb
         ? Uri.base
-        : Uri.parse('http://127.0.0.1:8787');
+        : Uri.parse('http://91.124.98.60:8787');
     return base.resolve(path);
   }
 
@@ -74,4 +74,16 @@ class ApiClient {
   }
 
   void close() => _client.close();
+
+  Future<dynamic> request(Session session, String path, {String method = 'GET', List<int>? bytes}) async {
+    final request = http.Request(method, _url('/api/documents$path'));
+    request.headers['Authorization'] = 'Bearer ${session.token}';
+    if (bytes != null) request.bodyBytes = bytes;
+    final response = await http.Response.fromStream(await _client.send(request).timeout(const Duration(seconds: 60)));
+    final data = response.bodyBytes.isEmpty ? null : jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode >= 400) {
+      throw ApiException(data is Map && data['detail'] is String ? data['detail'] : 'Request failed');
+    }
+    return data;
+  }
 }

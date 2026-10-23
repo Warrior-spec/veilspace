@@ -101,7 +101,7 @@ async def upload(request: Request, user: Member,
                 number = latest[0] + 1 if latest else 1
                 connection.execute("UPDATE documents SET name=? WHERE id=?", (name, document_id))
             else:
-                duplicate = connection.execute("SELECT d.id,r.number,r.status FROM documents d JOIN revisions r ON r.document_id=d.id WHERE d.owner_id=? AND r.content_hash=? ORDER BY r.number DESC LIMIT 1", (user["id"], content_hash)).fetchone()
+                duplicate = connection.execute("SELECT d.id,r.number,r.status FROM documents d JOIN revisions r ON r.document_id=d.id WHERE d.owner_id=? AND r.content_hash=? AND r.number=(SELECT MAX(x.number) FROM revisions x WHERE x.document_id=d.id) ORDER BY r.number DESC LIMIT 1", (user["id"], content_hash)).fetchone()
                 if duplicate:
                     connection.execute("UPDATE documents SET source_key=?,name=? WHERE id=?", (source_key, name, duplicate[0]))
                     path.unlink(missing_ok=True)
@@ -140,6 +140,13 @@ def download(document_id: str, request: Request, user: Member):
         raise HTTPException(404, "File not found")
     return FileResponse(path, media_type="application/pdf", filename="Document-" + document_id[:8] + ".pdf",
                         headers={"Cache-Control": "private, no-store"})
+
+
+@router.get("/{document_id}/preview")
+def preview(document_id: str, request: Request, user: Member):
+    from pypdf import PdfReader
+    response = download(document_id, request, user)
+    return {"text": "\n\n".join(page.extract_text() or "" for page in PdfReader(response.path).pages)}
 
 
 @router.delete("/{document_id}", status_code=204)

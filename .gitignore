@@ -1,6 +1,7 @@
 # Secrets and private documents
 .env
 .env.*
+*.env
 !.env.example
 *.pem
 *.key

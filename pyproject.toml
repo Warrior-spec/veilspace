@@ -26,6 +26,9 @@ veilspace-server = "veilspace.launcher:main"
 [tool.setuptools.packages.find]
 where = ["server"]
 
+[tool.setuptools.package-data]
+veilspace = ["*.html"]
+
 [tool.pytest.ini_options]
 testpaths = ["server/tests"]
 pythonpath = ["server"]

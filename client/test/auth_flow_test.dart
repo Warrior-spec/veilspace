@@ -15,12 +15,22 @@ http.Response sessionResponse(int status) => http.Response(
   status,
 );
 
+http.Response? workspaceResponse(http.Request request) {
+  if (request.method != 'GET') return null;
+  if (request.url.path.endsWith('/usage')) {
+    return http.Response('{"requests":0,"reserved_usd":0,"daily_limit_usd":1}', 200);
+  }
+  return http.Response('[]', 200);
+}
+
 void main() {
   testWidgets('sign in and revoke the current session on sign out', (
     tester,
   ) async {
     final api = ApiClient(
       client: MockClient((request) async {
+        final workspace = workspaceResponse(request);
+        if (workspace != null) return workspace;
         if (request.url.path.endsWith('/logout')) {
           expect(request.headers['Authorization'], 'Bearer test-session');
           return http.Response('', 204);
@@ -77,6 +87,8 @@ void main() {
   ) async {
     final api = ApiClient(
       client: MockClient((request) async {
+        final workspace = workspaceResponse(request);
+        if (workspace != null) return workspace;
         expect(request.url.path, '/api/auth/register');
         expect(jsonDecode(request.body)['display_name'], 'Demo Member');
         return sessionResponse(201);
@@ -98,5 +110,6 @@ void main() {
     await tester.tap(find.text('Create account'));
     await tester.pumpAndSettle();
     expect(find.text('member@example.com'), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
   });
 }

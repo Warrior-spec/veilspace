@@ -45,6 +45,9 @@ def test_pipeline_publishes_only_redacted_pdf_and_removes_original(workspace):
     text = "".join(page.extract_text() for page in PdfReader(io.BytesIO(pdf.content)).pages)
     assert "Alice Khan" not in text and "alice@example.com" not in text
     assert "Person-001" in text and "EMAIL REMOVED" in text
+    preview = client.get(f"/api/documents/{identifier}/preview", headers=second)
+    assert preview.status_code == 200
+    assert "Person-001" in preview.json()["text"] and "Alice Khan" not in preview.json()["text"]
     assert not list((client.app.state.settings.data_dir / "staging").iterdir())
     assert len(calls) == 1
 
