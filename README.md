@@ -10,6 +10,18 @@ Document sharing with server-side redaction and consistent identity aliases.
 
 [Live application](http://91.124.98.60:8787) | [Android APK](https://raw.githubusercontent.com/Warrior-spec/veilspace/main/downloads/VeilSpace-Android.apk) | [Source code](https://github.com/Warrior-spec/veilspace)
 
+## Downloads
+
+[GitHub release](https://github.com/Warrior-spec/veilspace/releases/tag/v0.1.0)
+
+| Platform | Download |
+| --- | --- |
+| Android 7.0 or later, ARM64 | [VeilSpace-Android.apk](https://github.com/Warrior-spec/veilspace/releases/download/v0.1.0/VeilSpace-Android.apk) |
+| Windows desktop app | [VeilSpace-Windows.zip](https://github.com/Warrior-spec/veilspace/releases/download/v0.1.0/VeilSpace-Windows.zip) |
+| Portable Windows server | [VeilSpaceServer.exe](https://github.com/Warrior-spec/veilspace/releases/download/v0.1.0/VeilSpaceServer.exe) |
+
+Extract the entire Windows ZIP and run `veilspace.exe`. Its DLLs and data directory must stay beside it. The Android demo APK uses the development signing key. Release assets include SHA256 checksums.
+
 ## Demo login
 
 Use the same demo account on the website, Windows app, and Android app:

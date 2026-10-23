@@ -1,11 +1,12 @@
-# Android demo build
+# Application downloads
 
-[Download VeilSpace](https://raw.githubusercontent.com/Warrior-spec/veilspace/main/downloads/VeilSpace-Android.apk)
+[Download the packaged apps from GitHub Releases](https://github.com/Warrior-spec/veilspace/releases/tag/v0.1.0).
 
-- Flutter release build, version 0.1.0.
-- Android 7.0 or later, ARM64 devices.
-- Signed with the development key for hackathon sideloading.
-- Backend: http://91.124.98.60:8787.
-- Demo login is shown on the sign-in screen and in the project README.
+- VeilSpace-Android.apk: Flutter release build for ARM64 phones, Android 7.0 or later. Development signing key for sideloading.
+- VeilSpace-Windows.zip: extract the full ZIP and run veilspace.exe. Keep its DLLs and data directory together.
+- VeilSpaceServer.exe: portable Windows server and website. Supply your own private .env containing OPENAI_API_KEY beside it.
+- SHA256SUMS.txt: checksums for all three downloads.
 
-SHA256: `03da958ae96ba350c8bebd06dff39965c28838bf5d235d3a82e4502901bead9c`
+The website and native clients use http://91.124.98.60:8787 for the demo. The public demo login appears on the login screen and in the project README. No API keys or private server data are included in these downloads.
+
+Version tags publish the verified downloads through the repository's release workflow.
