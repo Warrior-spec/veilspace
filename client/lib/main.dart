@@ -52,5 +52,3 @@ class _VeilSpaceAppState extends State<VeilSpaceApp> {
     );
   }
 }
-
-

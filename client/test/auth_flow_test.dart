@@ -8,17 +8,18 @@ import 'package:veilspace/api.dart';
 import 'package:veilspace/main.dart';
 
 http.Response sessionResponse(int status) => http.Response(
-  jsonEncode({
-    'access_token': 'test-session',
-    'user': {'display_name': 'Demo Member', 'email': 'member@example.com'},
-  }),
-  status,
-);
+      jsonEncode({
+        'access_token': 'test-session',
+        'user': {'display_name': 'Demo Member', 'email': 'member@example.com'},
+      }),
+      status,
+    );
 
 http.Response? workspaceResponse(http.Request request) {
   if (request.method != 'GET') return null;
   if (request.url.path.endsWith('/usage')) {
-    return http.Response('{"requests":0,"reserved_usd":0,"daily_limit_usd":1}', 200);
+    return http.Response(
+        '{"requests":0,"reserved_usd":0,"daily_limit_usd":1}', 200);
   }
   return http.Response('[]', 200);
 }

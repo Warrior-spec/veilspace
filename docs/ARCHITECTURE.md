@@ -2,30 +2,29 @@
 
 ## Boundaries
 
-Flutter Windows, Android, and web clients connect to one fixed HTTPS API. Only Windows watches a selected folder. Mobile and web select files manually. Configuration and credentials are operator concerns, absent from end-user screens.
+Flutter Windows and Android clients connect to one fixed HTTP demo API. Web clients use their own origin. Only Windows watches a selected folder. Mobile and web select files manually. Configuration and credentials are operator concerns, absent from end-user screens.
 
 Python FastAPI and a processing worker run on the Windows server. SQLite stores metadata and access rules; files live outside the public web root. API keys never ship with clients. The server executable initializes its database and directories beside itself.
 
 ## Lifecycle
 
-`queued -> extracting -> assessing -> sanitizing -> verifying -> published`
+`queued -> processing -> published`, with failures held as `pending`.
 
 Any unsupported, ambiguous, incomplete, or failed job transitions to `pending` with a structured reason. A model's reported confidence alone is not sufficient to authorize publication. A member-facing library exposes only published sanitized revisions.
 
-Raw uploads temporarily reach the private server staging area. Text sent to a cloud AI service also leaves this server. Do not claim local-only processing or guaranteed detection of every sensitive detail. Originals expire after processing or a bounded retention period; jobs cannot retain them indefinitely.
+Raw uploads reach the private server staging area. Text sent to the AI service also leaves this server. Successful processing deletes the original. Pending originals remain private until retry or owner deletion. Processing is not local-only, and detection is not guaranteed to find every sensitive detail.
 
 ## Identity consistency
 
-Aliases are scoped to one workspace. A protected mapping is accessible to processing code and authorized ownership/review flows, not ordinary members. Canonical exact matches can reuse aliases; ambiguous names or conflicts require review. Do not merge people solely because their names resemble each other.
+Aliases are scoped to the single workspace. The private mapping is accessible only to processing code. Case and whitespace normalization reuse exact name aliases. Ambiguous assessments remain pending. Similar-looking names are not merged automatically.
 
 ## Cost controls
 
 - Extract supported text with conventional libraries; use deterministic detection for predictable patterns.
 - Key assessment caches by workspace, content digest, policy, and detector version.
 - Avoid repeated assessments for unchanged uploads and debounced saves.
-- Reuse chunk assessments only when relevant surrounding context is unchanged.
 - Bound upload size, extracted text, model output, concurrency, and retries.
-- Reserve estimated request costs atomically before dispatch. Stop new AI assessments when the remaining allowance is insufficient; reconcile actual usage afterward.
+- Reserve conservative estimated request costs atomically before dispatch. Stop new AI assessments when the allowance is insufficient. Reservations are not reduced afterward and are not provider billing totals.
 - Reading, previewing, downloading, and listing files never invoke AI.
 - Exhausted limits leave jobs pending, not published through an unchecked fallback.
 

@@ -24,8 +24,8 @@ class ApiClient {
     final base = _origin.isNotEmpty
         ? Uri.parse(_origin)
         : kIsWeb
-        ? Uri.base
-        : Uri.parse('http://91.124.98.60:8787');
+            ? Uri.base
+            : Uri.parse('http://91.124.98.60:8787');
     return base.resolve(path);
   }
 
@@ -45,7 +45,8 @@ class ApiClient {
           }),
         )
         .timeout(const Duration(seconds: 20));
-    final data = jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+    final data =
+        jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
     if (response.statusCode != 200 && response.statusCode != 201) {
       throw ApiException(
         data['detail'] is String
@@ -62,12 +63,10 @@ class ApiClient {
   }
 
   Future<void> logout(Session session) async {
-    final response = await _client
-        .post(
-          _url('/api/auth/logout'),
-          headers: {'Authorization': 'Bearer ${session.token}'},
-        )
-        .timeout(const Duration(seconds: 20));
+    final response = await _client.post(
+      _url('/api/auth/logout'),
+      headers: {'Authorization': 'Bearer ${session.token}'},
+    ).timeout(const Duration(seconds: 20));
     if (response.statusCode != 204 && response.statusCode != 401) {
       throw const ApiException('Could not sign out. Please try again.');
     }
@@ -75,14 +74,20 @@ class ApiClient {
 
   void close() => _client.close();
 
-  Future<dynamic> request(Session session, String path, {String method = 'GET', List<int>? bytes}) async {
+  Future<dynamic> request(Session session, String path,
+      {String method = 'GET', List<int>? bytes}) async {
     final request = http.Request(method, _url('/api/documents$path'));
     request.headers['Authorization'] = 'Bearer ${session.token}';
     if (bytes != null) request.bodyBytes = bytes;
-    final response = await http.Response.fromStream(await _client.send(request).timeout(const Duration(seconds: 60)));
-    final data = response.bodyBytes.isEmpty ? null : jsonDecode(utf8.decode(response.bodyBytes));
+    final response = await http.Response.fromStream(
+        await _client.send(request).timeout(const Duration(seconds: 60)));
+    final data = response.bodyBytes.isEmpty
+        ? null
+        : jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode >= 400) {
-      throw ApiException(data is Map && data['detail'] is String ? data['detail'] : 'Request failed');
+      throw ApiException(data is Map && data['detail'] is String
+          ? data['detail']
+          : 'Request failed');
     }
     return data;
   }

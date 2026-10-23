@@ -105,8 +105,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     decoration: const InputDecoration(labelText: 'Email'),
                     keyboardType: TextInputType.emailAddress,
                     autofillHints: const [AutofillHints.email],
-                    validator: (value) =>
-                        RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
+                    validator: (value) => RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
                             .hasMatch((value ?? '').trim())
                         ? null
                         : 'Enter a valid email',
@@ -123,8 +122,8 @@ class _AuthScreenState extends State<AuthScreen> {
                     onFieldSubmitted: (_) {
                       if (!_busy) _submit();
                     },
-                    validator: (value) =>
-                        (value ?? '').length < (_register ? 10 : 1)
+                    validator: (value) => (value ?? '').length <
+                            (_register ? 10 : 1)
                         ? 'Enter ${_register ? 'at least 10 characters' : 'your password'}'
                         : null,
                   ),
@@ -156,10 +155,10 @@ class _AuthScreenState extends State<AuthScreen> {
                     onPressed: _busy
                         ? null
                         : () => setState(() {
-                            _register = !_register;
-                            _error = null;
-                            _form.currentState?.reset();
-                          }),
+                              _register = !_register;
+                              _error = null;
+                              _form.currentState?.reset();
+                            }),
                     child: Text(
                       _register
                           ? 'Already registered? Sign in'

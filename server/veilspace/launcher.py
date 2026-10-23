@@ -123,7 +123,8 @@ def main() -> int:
             if address:
                 print(f"Public candidate: http://{address}:{args.port}", flush=True)
             print("External access depends on your provider firewall and routing.", flush=True)
-        settings = Settings(environment="production", data_dir=data_dir)
+        env_file = Path(sys.executable).resolve().parent / ".env" if getattr(sys, "frozen", False) else Path.cwd() / ".env"
+        settings = Settings(_env_file=env_file, environment="production", data_dir=data_dir)
         uvicorn.Server(uvicorn.Config(create_app(settings), log_level="info")).run(sockets=[listener])
     finally:
         listener.close()
