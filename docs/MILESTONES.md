@@ -20,13 +20,12 @@ Acceptance: backend runs; source is organized; missing prerequisites and next st
 
 Acceptance: executable starts without Python or a database installation; Flutter analysis passes.
 
-## 3. Authentication
+## 3. Authentication: in progress
 
-- Finish Flutter SDK setup, generate platform runners, and verify platform build prerequisites.
-- Create SQLite migrations for users, workspace memberships, documents, and revisions.
-- Add password hashing, signup, login, expiring sessions, and logout.
-- Enforce membership and ownership on every relevant endpoint.
-- Connect Flutter login and verify with two different accounts.
+- [x] Create SQLite migrations for users, memberships, and sessions.
+- [x] Add password hashing, signup, login, expiring sessions, and logout.
+- [x] Verify session isolation, revocation, expiry, and persistence with two users.
+- [ ] Verify the shared client login screens with the running server.
 
 Acceptance: two users can sign in; unauthorized requests and cross-owner modifications fail.
 

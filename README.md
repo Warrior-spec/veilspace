@@ -9,7 +9,7 @@ Document sharing with server-side redaction and consistent identity aliases.
 - Supported inputs: DOCX, text-based PDF, and TXT.
 - Sanitized output: PDF. Unreadable or uncertain documents remain pending.
 
-The current build provides the server foundation and client shell. Authentication and document processing are under development.
+The server supports signup, login, expiring sessions, and logout. The shared client includes login and registration screens. Document processing is under development.
 
 ## Portable server
 

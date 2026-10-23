@@ -1,9 +1,32 @@
 import 'package:flutter/material.dart';
+import 'api.dart';
+import 'auth_screen.dart';
 
 void main() => runApp(const VeilSpaceApp());
 
-class VeilSpaceApp extends StatelessWidget {
-  const VeilSpaceApp({super.key});
+class VeilSpaceApp extends StatefulWidget {
+  final ApiClient? api;
+  const VeilSpaceApp({super.key, this.api});
+
+  @override
+  State<VeilSpaceApp> createState() => _VeilSpaceAppState();
+}
+
+class _VeilSpaceAppState extends State<VeilSpaceApp> {
+  late final ApiClient api;
+  Session? session;
+
+  @override
+  void initState() {
+    super.initState();
+    api = widget.api ?? ApiClient();
+  }
+
+  @override
+  void dispose() {
+    api.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +37,20 @@ class VeilSpaceApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF146C60)),
         useMaterial3: true,
       ),
-      home: const WorkspaceFoundation(),
+      home: session == null
+        ? AuthScreen(api: api, onAuthenticated: (value) => setState(() => session = value))
+        : WorkspaceFoundation(api: api, session: session!,
+            onSignedOut: () => setState(() => session = null)),
     );
   }
 }
 
 class WorkspaceFoundation extends StatefulWidget {
-  const WorkspaceFoundation({super.key});
+  final ApiClient api;
+  final Session session;
+  final VoidCallback onSignedOut;
+  const WorkspaceFoundation({super.key, required this.api,
+    required this.session, required this.onSignedOut});
 
   @override
   State<WorkspaceFoundation> createState() => _WorkspaceFoundationState();
@@ -28,12 +58,29 @@ class WorkspaceFoundation extends StatefulWidget {
 
 class _WorkspaceFoundationState extends State<WorkspaceFoundation> {
   int selected = 0;
+  bool signingOut = false;
   static const labels = ['My Files', 'Shared Files', 'Pending'];
+
+  Future<void> signOut() async {
+    setState(() => signingOut = true);
+    try {
+      await widget.api.logout(widget.session);
+      if (mounted) widget.onSignedOut();
+    } catch (_) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not sign out. Please try again.')));
+    } finally {
+      if (mounted) setState(() => signingOut = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('VeilSpace')),
+      appBar: AppBar(title: const Text('VeilSpace'), actions: [
+        IconButton(onPressed: signingOut ? null : signOut,
+          tooltip: 'Sign out', icon: const Icon(Icons.logout)),
+      ]),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 720),
@@ -44,14 +91,13 @@ class _WorkspaceFoundationState extends State<WorkspaceFoundation> {
               children: [
                 Text(labels[selected], style: Theme.of(context).textTheme.headlineMedium),
                 const SizedBox(height: 12),
-                const Text('Your shared workspace starts here.'),
+                Text(widget.session.email),
                 const SizedBox(height: 24),
                 const Card(
                   child: Padding(
                     padding: EdgeInsets.all(20),
                     child: Text(
-                      'Project foundation: login, uploads, and document processing '
-                      'will be connected in the next milestones.',
+                      'No files yet.',
                     ),
                   ),
                 ),

@@ -18,7 +18,8 @@ def test_initialization_preserves_existing_data(tmp_path):
     initialize_database(data)
     with connect_database(data) as connection:
         assert connection.execute("SELECT value FROM sample").fetchone()[0] == "preserved"
-        assert connection.execute("SELECT count(*) FROM schema_migrations").fetchone()[0] == 1
+        versions = connection.execute("SELECT version FROM schema_migrations").fetchall()
+        assert len(versions) == len(set(versions))
         assert connection.execute("PRAGMA journal_mode").fetchone()[0] == "wal"
 
 
