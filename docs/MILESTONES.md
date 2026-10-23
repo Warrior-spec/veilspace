@@ -35,10 +35,10 @@ One folder is remembered per account. Files must be stable before upload. Unchan
 - [x] Verify 27 backend tests, four client tests, and clean Flutter analysis.
 - [x] Add registered team details, AI explanation, stack, local setup, deployment link, and resource credits to the README.
 - [x] Finish NDK installation.
-- [ ] Compile the Flutter APK.
+- [x] Compile and verify the signed Flutter ARM64 release APK.
 - [ ] Install and test only VeilSpace on the paired Android phone.
 - [ ] Complete a final Windows folder-upload demonstration against the public server.
-- [ ] Publish the APK with an accessible link.
+- [x] Publish the APK in the public repository with a direct download link.
 - [ ] Record a narrated 3 to 5 minute demo at 720p or higher.
 - [ ] Add the public demo video link to the README and form.
 - [ ] Test every submission link from a separate browser session or device.

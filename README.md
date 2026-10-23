@@ -8,7 +8,7 @@ Document sharing with server-side redaction and consistent identity aliases.
 
 **Theme:** Cybersecurity
 
-[Live application](http://91.124.98.60:8787) | [Source code](https://github.com/Warrior-spec/veilspace)
+[Live application](http://91.124.98.60:8787) | [Android APK](https://raw.githubusercontent.com/Warrior-spec/veilspace/main/downloads/VeilSpace-Android.apk) | [Source code](https://github.com/Warrior-spec/veilspace)
 
 ## Demo login
 
@@ -93,7 +93,7 @@ Flutter setup and builds: [client/README.md](client/README.md).
 
 ## Submission
 
-The live website is deployed. Android APK packaging and the narrated demo recording are pending. The APK and demo video links will be added when available. The public demo credentials above are also available for the submission form notes.
+The live website and installable ARM64 Android APK are available at the links above. The narrated demo video link will be added when available. The public demo credentials above are also available for the submission form notes.
 
 Resources: Flutter, FastAPI, SQLite, PyInstaller, pypdf, ReportLab, file_selector, and the OpenAI API. No datasets are included. Assessment uses `gpt-4.1-mini` with a 20,000-character input limit, a 2,048-token output limit, one worker, no automatic AI retries, at most 100 requests per UTC day, and a default $1 daily reservation allowance. Identical extracted content reuses cached assessments. Reservations are conservative application estimates, not provider billing totals.
 
